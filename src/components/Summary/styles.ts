@@ -6,7 +6,7 @@ export const Container = styled.div`
     gap: 2rem;
     margin-top: -10rem;
 
-    div{
+    div {
         background: var(--shape);
         padding: 1.5rem 2rem;
         border-radius: 0.25rem;
@@ -19,7 +19,7 @@ export const Container = styled.div`
         justify-content: space-between;
     }
 
-    strong{
+    strong {
         display: block;
         margin-top: 1rem;
         font-size: 2rem;
@@ -27,7 +27,7 @@ export const Container = styled.div`
         line-height: 3rem;
     }
 
-    &.highlight-background{
+    &.highlight-background {
         background: var(--green);
         color: #FFF;
     }
