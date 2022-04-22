@@ -42,24 +42,15 @@ export const Container = styled.form`
         &:hover{
             filter: brightness(0.9);
         }
-    
-    }
-
-  
+    } 
 `
-
 
 export const TransactionTypeContainer = styled.div`
     margin: 1rem 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.25rem;
-
-    
-
-
 `
-
 interface RadioBoxProps {
     isActive: boolean;
     activeColor: 'green' | 'red';
