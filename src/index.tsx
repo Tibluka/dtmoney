@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
 import { createServer, Model } from 'miragejs'
-import { Server } from 'tls';
 
 createServer({
 
@@ -26,7 +25,7 @@ createServer({
           title: 'Aluguel',
           type: 'withdraw',
           category: 'Casa',
-          amount: -1100,
+          amount: 1100,
           createdAt: new Date('2021-01-14 09:00:00')
         },
       ]
@@ -41,8 +40,7 @@ createServer({
 
     this.post('/transactions', (schema, request) => {
       const data = JSON.parse(request.requestBody);
-
-      return schema.create('transaction', data)
+      return schema.create('transaction', {...data, createdAt: new Date()})
     })
   }
 })
