@@ -1,15 +1,6 @@
 import { Container } from "./styles";
 import { useTransactions } from "../../hooks/useTransactionsContext";
 
-interface Transaction {
-    id: number;
-    title: string;
-    amount: number;
-    type: string;
-    category: string;
-    createdAt: string;
-}
-
 export function TransactionsTable() {
     const { transactions } = useTransactions()
 
