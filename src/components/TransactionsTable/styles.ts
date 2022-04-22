@@ -15,6 +15,7 @@ export const Container = styled.div`
             line-height: 1.5rem;
         }
 
+
         td{
             padding: 1rem 2rem;
             border: 0;
@@ -32,12 +33,43 @@ export const Container = styled.div`
             &.deposit{
                 color: var(--green);
             }
+
+            &:last-child{
+                display: flex;
+                align-items: center;
+            }
+
+            button{
+                border: 0;
+                height: 2rem;
+                width: 100%;
+                padding: 0 1rem;
+                border-radius: 0.25rem;
+                margin: 0 0.25rem;
+                background: transparent;
+                transition: 0.2s;
+
+                img{
+                    width: 15px;
+                }
+                
+                &.edit:hover{
+                    background: var(--background);
+                }
+                &.delete:hover{
+                    background: var(--red);
+                    img{
+                        filter: invert(1);
+                    }
+                }
+            }
+
         }   
     }
 `
 
 export const Filter = styled.div`
-    width: 50%;
+    width: 100%;
     display: flex;
     align-items: center;
 
