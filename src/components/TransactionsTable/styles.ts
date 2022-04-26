@@ -91,7 +91,6 @@ export const Filter = styled.div`
     button{
         width: 10rem;
         height: 4rem;
-        background: var(--shape);
         border: 0;
         border-radius: 0.25rem;
     }

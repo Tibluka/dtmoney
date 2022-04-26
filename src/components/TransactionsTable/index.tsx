@@ -1,14 +1,25 @@
 import { Container, Filter } from "./styles";
 import { useTransactions } from "../../hooks/useTransactionsContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RadioBox, TransactionTypeContainer } from "../NewTransactionModal/styles";
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
 import trashImg from '../../assets/trash.svg'
 import editImg from '../../assets/edit.svg'
 
-export function TransactionsTable() {
-    const { transactions } = useTransactions()
+interface IModal {
+    title: string;
+    amount: number;
+    category: string;
+    type: string;
+}
+interface DashboardProps {
+    onOpenNewTransactionModal: (values: IModal) => void;
+}
+
+export function TransactionsTable({ onOpenNewTransactionModal }: DashboardProps) {
+
+    const { transactions, deleteTransaction } = useTransactions()
     const [search, setSearch] = useState('')
     const [type, setType] = useState('')
 
@@ -33,11 +44,11 @@ export function TransactionsTable() {
                             .format(new Date(transaction.createdAt))}
                     </td>
                     <td>
-                        <button className="edit">
-                            <img src={trashImg} alt="Excluir"/>
+                        <button className="edit" onClick={() => deleteTransaction(transaction)}>
+                            <img src={trashImg} alt="Excluir" />
                         </button>
-                        <button className="delete">
-                            <img src={editImg} alt="Editar"/>
+                        <button className="delete" onClick={() => onOpenNewTransactionModal(transaction)}>
+                            <img src={editImg} alt="Editar" />
                         </button>
                     </td>
                 </tr>
@@ -47,6 +58,7 @@ export function TransactionsTable() {
 
     function lookup(transaction: any) {
         let { title, type, category } = transaction
+
         title = title.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         type = type.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
         category = category.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
@@ -56,7 +68,7 @@ export function TransactionsTable() {
             type.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
             String(transaction.amount).includes(search)) {
             return true
-        }
+        } else return true
     }
 
     return (
@@ -66,7 +78,7 @@ export function TransactionsTable() {
                     onChange={event => setSearch(event.target.value)} />
                 <TransactionTypeContainer>
                     <RadioBox
-                        onClick={() => setType('deposit')}
+                        onClick={() => type === 'deposit' ? setType('') : setType('deposit')}
                         isActive={type === 'deposit'}
                         type="button"
                         activeColor="green">
@@ -74,7 +86,7 @@ export function TransactionsTable() {
                         <span>Entradas</span>
                     </RadioBox>
                     <RadioBox
-                        onClick={() => setType('withdraw')}
+                        onClick={() => type === 'withdraw' ? setType('') : setType('withdraw')}
                         isActive={type === 'withdraw'}
                         type="button"
                         activeColor="red">

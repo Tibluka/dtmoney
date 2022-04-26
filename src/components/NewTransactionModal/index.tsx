@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import Modal from 'react-modal'
 import closeImg from '../../assets/close.svg'
 import incomeImg from '../../assets/income.svg'
@@ -9,23 +9,43 @@ import { Container, RadioBox, TransactionTypeContainer } from './styles'
 interface NewTransactionModalProps {
     isOpen: boolean;
     onRequestClose: () => void;
+    values: {
+        title: string;
+        amount: number;
+        category: string;
+        type: string;
+        id?: number;
+    }
 }
 
-export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionModalProps) {
+export function NewTransactionModal({ isOpen, onRequestClose, values }: NewTransactionModalProps) {
+    const [title, setTitle] = useState<string>('')
+    const [amount, setAmount] = useState(values.amount)
+    const [category, setCategory] = useState(values.category)
+    const [type, setType] = useState(values.type)
+    const [id, setId] = useState(values.id)
+    const { createTransaction, updateTransaction } = useTransactions();
 
-    const [title, setTitle] = useState('')
-    const [amount, setAmount] = useState(0)
-    const [category, setCategory] = useState('')
-    const [type, setType] = useState('deposit')
-    const { createTransaction } = useTransactions()
 
-    async function handleCreateNewTransaction(event: FormEvent) {
+    useEffect(() => {
+        setTitle(values.title)
+        setAmount(values.amount)
+        setType(values.type)
+        setCategory(values.category)
+        setId(values.id)
+    }, [values])
+
+    async function handleTransaction(event: FormEvent) {
         event.preventDefault()
-        await createTransaction({ title, amount, category, type })
-        setTitle('')
-        setAmount(0)
-        setCategory('')
-        setType('deposit')
+        if (id) {
+            await updateTransaction({ title, amount, category, type, id })
+        } else {
+            await createTransaction({ title, amount, category, type })
+        }
+        setTitle(values.title)
+        setAmount(values.amount)
+        setCategory(values.category)
+        setType(values.type)
         onRequestClose()
     }
 
@@ -44,8 +64,8 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
                 <img src={closeImg} alt="Fechar modal" />
             </button>
 
-            <Container onSubmit={handleCreateNewTransaction}>
-                <h2>Cadastrar transação</h2>
+            <Container onSubmit={handleTransaction}>
+                <h2>{id ? 'Editar' : 'Cadastrar'} transação</h2>
                 <input placeholder="Título"
                     value={title}
                     onChange={event => setTitle(event.target.value)}
@@ -83,7 +103,7 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
                 />
 
                 <button type="submit">
-                    Cadastrar
+                    {id ? 'Editar' : 'Cadastrar'}
                 </button>
             </Container>
 
