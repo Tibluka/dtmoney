@@ -68,7 +68,7 @@ export function TransactionsTable({ onOpenNewTransactionModal }: DashboardProps)
             type.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
             String(transaction.amount).includes(search)) {
             return true
-        } else return true
+        } else return false
     }
 
     return (

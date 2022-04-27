@@ -42,7 +42,7 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     }
 
     async function updateTransaction(transactionInput: TransactionInput) {
-        const response = await api.put(`transactions/${transactionInput.id}`, { ...transactionInput })
+        const response = await api.put(`transactions/${transactionInput.id}`, { ...transactionInput, createdAt: transactions.find(transaction => transaction.id === transactionInput.id)?.createdAt })
         setTransactions(
             transactions.map(transaction => {
                 if (response.data.id === transaction.id) {
